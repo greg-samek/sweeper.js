@@ -1,7 +1,11 @@
 /*
-Main Class. Controls game rules, win/loss, board creation.
-
 Compile using babel-cli: babel main.js --out-file index.js
+*/
+
+ import Mustache from 'mustache';
+
+/*
+Controls win/loss, holds main data regarding game.
 */
 
 class Sweeper {
@@ -14,7 +18,6 @@ class Sweeper {
     this.rows = rows;
     this.columns = columns;
     this.NumberOfBombs = this.NumberOfBombs(this.rows, this.columns, this.difficulty);
-    this.gameBoard = null;
   }
 
   NumberOfBombs(rows, columns, difficulty) {
@@ -25,29 +28,28 @@ class Sweeper {
 
 }
 
-const example = new Sweeper(5, 5, 5);
-
 
 /*
-Class that colors the creation of boards and the location of
+Class that controls the creation of boards and the location of
 bombs.
 
-We send messages to bomb like... did the user just step on a bomb?
-
+We send messages to board like... did the user just step on a bomb?
 */
 
 class Board {
+
   /*
   @constructor
   @param {number} rows
   @param {number} columns
   @param {number} NumberOfBombs
   */
+
   constructor(rows, columns, NumberOfBombs) {
     this.rows = rows;
     this.columns = columns;
+    this.size = rows * columns;
     this.NumberOfBombs = NumberOfBombs;
-    this.boardLocationArray = _initLocationArray(rows, columns, NumberOfBombs);
   }
 
   /*
@@ -56,14 +58,50 @@ class Board {
     @param {number} columns
     @return {array} boardLocationArray
   */
-  _initLocationArray() {
 
+  initLocationArray() {
+    const size = this.size;
+    let boardLocationArray = new Array(size);
+    let count = 0;
 
+    while ( count < size ) {
+      const location = Math.random(size);
+      const value = boardLocationArray[location];
+
+      if (!value === 'B') {
+        boardLocationArray[location] = 'B';
+        count++;
+      }
+
+      
+    }
 
   }
 
+}
 
 
+/*
+Pure function that renders boards using mustache templates.
+*/
+function render() {
 
 }
+
+
+/*
+Responds to all dom event. Bound to dom in main function runner.
+*/
+
+/*
+The main runner function. Source of global state. Dependency injector.
+*/
+
+(() => {
+  const example = new Sweeper(5, 5, 5);
+  const exampleBoard = new Board(example.rows, example.columns, example.NumberOfBombs);
+  exampleBoard.board = exampleBoard.initLocationArray();
+  console.log(exampleBoard.boardLocationArray);
+})()
+
 
