@@ -61,20 +61,23 @@ class Board {
 
   initLocationArray() {
     const size = this.size;
+    const NumberOfBombs = this.NumberOfBombs;
     let boardLocationArray = new Array(size);
     let count = 0;
 
-    while ( count < size ) {
-      const location = Math.random(size);
+    while ( count < NumberOfBombs ) {
+      const location = Math.floor(Math.random() * size);
       const value = boardLocationArray[location];
+      console.log(value);
 
       if (!value === 'B') {
         boardLocationArray[location] = 'B';
         count++;
       }
 
-      
     }
+
+    return boardLocationArray;
 
   }
 
@@ -99,8 +102,8 @@ The main runner function. Source of global state. Dependency injector.
 
 (() => {
   const example = new Sweeper(5, 5, 5);
-  const exampleBoard = new Board(example.rows, example.columns, example.NumberOfBombs);
-  exampleBoard.board = exampleBoard.initLocationArray();
+  let exampleBoard = new Board(example.rows, example.columns, example.NumberOfBombs);
+  exampleBoard.boardLocationArray = exampleBoard.initLocationArray();
   console.log(exampleBoard.boardLocationArray);
 })()
 

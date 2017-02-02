@@ -78,19 +78,22 @@ var Board = function () {
     key: 'initLocationArray',
     value: function initLocationArray() {
       var size = this.size;
+      var NumberOfBombs = this.NumberOfBombs;
       var boardLocationArray = new Array(size);
-
       var count = 0;
 
-      while (count < size) {
-        var location = Math.random(size);
+      while (count < NumberOfBombs) {
+        var location = Math.floor(Math.random() * size);
         var value = boardLocationArray[location];
+        console.log(value);
 
         if (!value === 'B') {
           boardLocationArray[location] = 'B';
           count++;
         }
       }
+
+      return boardLocationArray;
     }
   }]);
 
@@ -115,6 +118,6 @@ The main runner function. Source of global state. Dependency injector.
 (function () {
   var example = new Sweeper(5, 5, 5);
   var exampleBoard = new Board(example.rows, example.columns, example.NumberOfBombs);
-  exampleBoard.board = exampleBoard.initLocationArray();
+  exampleBoard.boardLocationArray = exampleBoard.initLocationArray();
   console.log(exampleBoard.boardLocationArray);
 })();
